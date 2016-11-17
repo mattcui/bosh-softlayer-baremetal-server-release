@@ -1,6 +1,0 @@
-[submodule "src/baremetal-provision-server"]
-	path = src/baremetal-provision-server
-	url = https://github.com/cloudfoundry-community/bosh-softlayer-baremetal-server
-[submodule "src/softlayer-api-perl-client"]
-	path = src/softlayer-api-perl-client
-	url = https://github.com/softlayer/softlayer-api-perl-client
