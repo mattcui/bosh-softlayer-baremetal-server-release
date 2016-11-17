@@ -13,7 +13,7 @@ addons:
 before_install:
   - psql -c 'create database bosh;' -U postgres
 install:
-  - export GOPATH="${TRAVIS_BUILD_DIR}/src/github.com/mattcui/bosh-softlayer-baremetal-server-release:$GOPATH"
+  - export GOPATH="${TRAVIS_BUILD_DIR}:$GOPATH"
 
 script: bin/ci
 branches:
