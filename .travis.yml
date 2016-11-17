@@ -9,9 +9,9 @@ services:
 
 before_install:
   - docker pull postgres:9.4.10
-  - docker run -p 127.0.0.1:5432:54321 --name postgres -e POSTGRES_PASSWORD=postgres -d postgres:9.4.10
+  - docker run -d -p 127.0.0.1:5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres -d postgres:9.4.10
   - docker ps -a
-  - docker run -it --rm --link postgres:postgres postgres:9.4.10 sh -c "exec psql -h 127.0.0.1 -p 54321 -U postgres -c 'create database bosh'"
+  - docker run -it --rm --link postgres:postgres postgres:9.4.10 sh -c "exec psql -h 127.0.0.1 -p 5432 -U postgres -c 'create database bosh'"
 
 script: bin/ci
 branches:
