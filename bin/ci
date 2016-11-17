@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+(
+  set -e
+
+  base=$( cd "$( dirname "$( dirname "$0" )")" && pwd )
+  base_gopath=$( cd $base/../../../.. && pwd )
+
+  export GOPATH=$base_gopath:$GOPATH
+  echo "GOPATH : ${GOPATH}"
+
+  echo -e "\n Cleaning build artifacts..."
+  go clean
+
+  echo -e "\n Formatting packages..."
+  go fmt ./...
+
+  go build -o out/vps  github.com/cloudfoundry-community/vps/cmd/soft-layer-vm-pool-server
+  out/vps --logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh
+
+)
