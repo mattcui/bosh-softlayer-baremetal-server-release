@@ -17,3 +17,4 @@ script: bin/ci
 branches:
   only:
   - master
+  - develop
