@@ -16,6 +16,8 @@
   go fmt ./...
 
   go build -o out/vps  github.com/cloudfoundry-community/vps/cmd/soft-layer-vm-pool-server
-  out/vps --logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh
+  out/vps --logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh &
+
+  echo "The vps server is started, start running unit test..."
 
 )
