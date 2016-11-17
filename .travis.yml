@@ -9,7 +9,7 @@ services:
 
 before_install:
   - docker pull postgres:9.4.10
-  - docker run -p 127.0.0.1:5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres -d postgres:9.4.10
+  - docker run --name postgres -e POSTGRES_PASSWORD=postgres -d postgres:9.4.10
   - docker ps -a
   - docker run -it --rm --link postgres:postgres postgres:9.4.10 sh -c "exec psql -h \$POSTGRES_PORT_5432_TCP_ADDR -p \$POSTGRES_PORT_5432_TCP_PORT -U postgres -c 'create database bosh'"
 
