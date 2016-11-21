@@ -5,8 +5,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
-	//"net/http"
+	"net/http"
 	"os/exec"
+	"time"
 )
 
 type Args struct {
@@ -41,21 +42,22 @@ var _ = Describe("Virtual Pool Server", func() {
 			}
 			fmt.Println(string(vpsConfig))
 
-			//command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
-			command := exec.Command(string(vpsConfig), "--logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh")
+			command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
+			//command := exec.Command(string(vpsConfig), "--logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh")
 			session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
 
 			Ω(err).ShouldNot(HaveOccurred())
-			Expect(session.ExitCode()).To(Equal(0))
+			//Expect(session.ExitCode()).To(Equal(0))
 
-/*			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
+			time.Sleep(15*time.Second)
+			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
 			if err != nil {
 				fmt.Println(err.Error())
 			}
-			//defer resp.Body.Close()
+			defer resp.Body.Close()
 
 			Expect(err).To(HaveOccurred())
-			Expect(resp.StatusCode).To(Equal(200))*/
+			Expect(resp.StatusCode).To(Equal(200))
 		})
 	})
 
