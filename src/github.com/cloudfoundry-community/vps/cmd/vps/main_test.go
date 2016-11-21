@@ -31,23 +31,25 @@ var _ = Describe("Virtual Pool Server", func() {
 	})
 
 	Context("when starting Virtual Pool Server with given correct arguments", func() {
-		vpsArgs = Args{
-			LogLevel:                 "debug",
-			Host:                     "127.0.0.1",
-			Port:                     "8889",
-			DatabaseDriver:           "postgres",
-			DatabaseConnectionString: "postgres://postgres:postgres@127.0.0.1/bosh",
-		}
+		It("start virtual pool server and query all vms", func() {
+			vpsArgs = Args{
+				LogLevel:                 "debug",
+				Host:                     "127.0.0.1",
+				Port:                     "8889",
+				DatabaseDriver:           "postgres",
+				DatabaseConnectionString: "postgres://postgres:postgres@127.0.0.1/bosh",
+			}
 
-		command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
-		session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
-		Ω(err).ShouldNot(HaveOccurred())
+			command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
+			session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
+			Ω(err).ShouldNot(HaveOccurred())
 
-		resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
-		defer resp.Body.Close()
+			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
+			defer resp.Body.Close()
 
-		Expect(err).To(HaveOccurred())
-		Expect(resp.StatusCode).To(Equal(200))
+			Expect(err).To(HaveOccurred())
+			Expect(resp.StatusCode).To(Equal(200))
+		})
 	})
 
 	AfterEach(func() {

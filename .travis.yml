@@ -11,11 +11,8 @@ addons:
   postgresql: "9.4"
 
 before_install:
-  - go get github.com/tools/godep
-  - go get github.com/onsi/ginkgo/ginkgo
-  - go get github.com/golang/go/src/cmd/vet
-  - go get github.com/onsi/gomega
   - psql -c 'create database bosh;' -U postgres
+
 install:
   - export GOPATH="${TRAVIS_BUILD_DIR}"
 
