@@ -49,14 +49,14 @@ var _ = Describe("Virtual Pool Server", func() {
 			Ω(err).ShouldNot(HaveOccurred())
 			//Expect(session.ExitCode()).To(Equal(0))
 
-			time.Sleep(15*time.Second)
+			time.Sleep(20*time.Second)
 			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
 			if err != nil {
 				fmt.Println(err.Error())
 			}
 			defer resp.Body.Close()
 
-			Expect(err).To(HaveOccurred())
+			Expect(err).ToNot(HaveOccurred())
 			Expect(resp.StatusCode).To(Equal(200))
 		})
 	})
