@@ -22,7 +22,7 @@
   #out/vps --logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh &
 
   echo "Start running unit test..."
-  ginkgo -r -p --noisyPendings -focus=main_test
+  ginkgo -r -p --noisyPendings --focus=main_test
 
   echo -e "\n Vetting packages for potential issues..."
   go tool vet src action softlayer api common test_helpers integration
