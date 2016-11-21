@@ -43,11 +43,8 @@ var _ = Describe("Virtual Pool Server", func() {
 			fmt.Println(string(vpsConfig))
 
 			command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
-			//command := exec.Command(string(vpsConfig), "--logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh")
 			session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
-
 			Ω(err).ShouldNot(HaveOccurred())
-			//Expect(session.ExitCode()).To(Equal(0))
 
 			time.Sleep(20*time.Second)
 			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
@@ -57,7 +54,7 @@ var _ = Describe("Virtual Pool Server", func() {
 			defer resp.Body.Close()
 
 			Expect(err).ToNot(HaveOccurred())
-			Expect(resp.StatusCode).To(Equal(200))
+			Expect(resp.StatusCode).To(Equal(404))
 		})
 	})
 
