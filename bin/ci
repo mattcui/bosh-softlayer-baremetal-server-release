@@ -9,6 +9,11 @@
   #export GOPATH=$base_gopath:$GOPATH
   echo "GOPATH : ${GOPATH}"
 
+  go get github.com/tools/godep
+  go get github.com/onsi/ginkgo/ginkgo
+  go get github.com/golang/go/src/cmd/vet
+  go get github.com/onsi/gomega
+
   echo -e "\n Cleaning build artifacts..."
   go clean
 
