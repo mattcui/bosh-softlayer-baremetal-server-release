@@ -17,7 +17,7 @@ before_install:
   - go get github.com/onsi/gomega
   - psql -c 'create database bosh;' -U postgres
 install:
-  - export GOPATH="${TRAVIS_BUILD_DIR}:$GOPATH"
+  - export GOPATH="${TRAVIS_BUILD_DIR}"
 
 script: bin/ci
 branches:
