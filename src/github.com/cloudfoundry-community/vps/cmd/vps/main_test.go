@@ -26,7 +26,8 @@ var (
 
 var _ = Describe("Virtual Pool Server", func() {
 	BeforeEach(func() {
-		vpsConfig, err = gexec.Build("github.com/cloudfoundry-community/vps/cmd/vps")
+		//vpsConfig, err = gexec.Build("github.com/cloudfoundry-community/vps/cmd/vps")
+		vpsConfig, err = gexec.BuildIn("/home/travis/gopath:/home/travis/gopath/src/github.com/mattcui/bosh-softlayer-baremetal-server-release", "github.com/cloudfoundry-community/vps/cmd/vps")
 		Ω(err).ShouldNot(HaveOccurred())
 	})
 
