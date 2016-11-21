@@ -11,3 +11,4 @@ func TestSoftLayerVmPoolServer(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "SoftLayerVmPoolServer Suite")
 }
+

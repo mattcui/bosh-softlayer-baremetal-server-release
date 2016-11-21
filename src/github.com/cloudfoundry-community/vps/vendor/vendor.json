@@ -159,10 +159,10 @@
 			"revisionTime": "2016-10-15T05:15:24Z"
 		},
 		{
-			"checksumSHA1": "JaOQ9XoZ1uRIs0LrZwtyk+CliBA=",
+			"checksumSHA1": "K/UP0+bs3W9f+krIVlyNJJlRveg=",
 			"path": "github.com/go-openapi/runtime",
-			"revision": "2faaf90bf67e0616db00094f2141f99b00a9ebc2",
-			"revisionTime": "2016-10-19T07:03:01Z"
+			"revision": "12c07accf0687ab20b1e7b6293d8012ce282499c",
+			"revisionTime": "2016-11-12T08:02:51Z"
 		},
 		{
 			"checksumSHA1": "3SWkRiqUvSlB6N0L+pgb0gvf8Sw=",
@@ -623,5 +623,5 @@
 			"revisionTime": "2016-09-28T15:37:09Z"
 		}
 	],
-	"rootPath": "github.com/cloudfoundry-community/vps"
+	"rootPath": "github.com/cloudfoundry-community/bosh-softlayer-baremetal-server-release/src/github.com/cloudfoundry-community/vps"
 }
