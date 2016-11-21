@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
-	"net/http"
+	//"net/http"
 	"os/exec"
 )
 
@@ -39,16 +39,21 @@ var _ = Describe("Virtual Pool Server", func() {
 				DatabaseDriver:           "postgres",
 				DatabaseConnectionString: "postgres://postgres:postgres@127.0.0.1/bosh",
 			}
+			fmt.Println(string(vpsConfig))
 
 			command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
 			session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
 			Ω(err).ShouldNot(HaveOccurred())
+			Expect(session.ExitCode()).To(Equal(0))
 
-			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
-			defer resp.Body.Close()
+/*			resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			//defer resp.Body.Close()
 
 			Expect(err).To(HaveOccurred())
-			Expect(resp.StatusCode).To(Equal(200))
+			Expect(resp.StatusCode).To(Equal(200))*/
 		})
 	})
 

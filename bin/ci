@@ -21,8 +21,8 @@
   #go build -o out/vps  github.com/cloudfoundry-community/vps/cmd
   #out/vps --logLevel debug --host 127.0.0.1 --port 8889 --databaseDriver postgres --databaseConnectionString postgres://postgres:postgres@localhost/bosh &
 
-  echo "Start running unit test..."
-  ginkgo -r -p --noisyPendings --focus=main_test
+  echo "Start running unit test for main..."
+  ginkgo -p src/github.com/cloudfoundry-community/vps/cmd/vps
 
   echo -e "\n Vetting packages for potential issues..."
   go tool vet src action softlayer api common test_helpers integration
