@@ -6,8 +6,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/cloudfoundry-community/vps/db/dbfakes"
 	"github.com/cloudfoundry-community/vps/controllers"
+	"github.com/cloudfoundry-community/vps/db/dbfakes"
 	"github.com/cloudfoundry-community/vps/models"
 
 	"code.cloudfoundry.org/lager/lagertest"
@@ -15,9 +15,9 @@ import (
 
 var _ = Describe("VirtualGuestController", func() {
 	var (
-		logger                   *lagertest.TestLogger
-		fakeVirtualGuestDB               *dbfakes.FakeVirtualGuestDB
-		controller *controllers.VirtualGuestController
+		logger             *lagertest.TestLogger
+		fakeVirtualGuestDB *dbfakes.FakeVirtualGuestDB
+		controller         *controllers.VirtualGuestController
 	)
 
 	BeforeEach(func() {
@@ -28,10 +28,10 @@ var _ = Describe("VirtualGuestController", func() {
 
 	Describe("AllVirtualGuests", func() {
 		var (
-			vm1 models.VM
-			vm2 models.VM
-			actualVms    []*models.VM
-			err            error
+			vm1       models.VM
+			vm2       models.VM
+			actualVms []*models.VM
+			err       error
 		)
 
 		BeforeEach(func() {
@@ -77,29 +77,29 @@ var _ = Describe("VirtualGuestController", func() {
 	Describe("VirtualGuests", func() {
 		var (
 			public_vlan, private_vlan, cpu, memory_mb int32
-			state models.State
-			vm1 models.VM
-			vm2 models.VM
-			actualVms    []*models.VM
-			err            error
+			state                                     models.State
+			vm1                                       models.VM
+			vm2                                       models.VM
+			actualVms                                 []*models.VM
+			err                                       error
 		)
 
 		BeforeEach(func() {
 			vm1 = models.VM{
-				Cid: 1234567,
-				CPU: 4,
-				MemoryMb: 1024,
-				PublicVlan: 1234567,
+				Cid:         1234567,
+				CPU:         4,
+				MemoryMb:    1024,
+				PublicVlan:  1234567,
 				PrivateVlan: 12345678,
-				State: models.StateFree,
+				State:       models.StateFree,
 			}
 			vm2 = models.VM{
-				Cid: 1234568,
-				CPU: 4,
-				MemoryMb: 1024,
-				PublicVlan: 1234567,
+				Cid:         1234568,
+				CPU:         4,
+				MemoryMb:    1024,
+				PublicVlan:  1234567,
 				PrivateVlan: 12345678,
-				State: models.StateFree,
+				State:       models.StateFree,
 			}
 			state = models.StateUnknown
 		})
@@ -150,29 +150,29 @@ var _ = Describe("VirtualGuestController", func() {
 
 	Describe("VirtualGuestsByDeployments", func() {
 		var (
-			deployment_names = []string{"depoyment1","deployment2","deployment3"}
-			vm1 models.VM
-			vm2 models.VM
-			actualVms    []*models.VM
-			err            error
+			deployment_names = []string{"depoyment1", "deployment2", "deployment3"}
+			vm1              models.VM
+			vm2              models.VM
+			actualVms        []*models.VM
+			err              error
 		)
 
 		BeforeEach(func() {
 			vm1 = models.VM{
-				Cid: 1234567,
-				CPU: 4,
-				MemoryMb: 1024,
-				PublicVlan: 1234567,
+				Cid:         1234567,
+				CPU:         4,
+				MemoryMb:    1024,
+				PublicVlan:  1234567,
 				PrivateVlan: 12345678,
-				State: models.StateFree,
+				State:       models.StateFree,
 			}
 			vm2 = models.VM{
-				Cid: 1234568,
-				CPU: 4,
-				MemoryMb: 1024,
-				PublicVlan: 1234567,
+				Cid:         1234568,
+				CPU:         4,
+				MemoryMb:    1024,
+				PublicVlan:  1234567,
 				PrivateVlan: 12345678,
-				State: models.StateFree,
+				State:       models.StateFree,
 			}
 		})
 
@@ -213,29 +213,29 @@ var _ = Describe("VirtualGuestController", func() {
 
 	Describe("VirtualGuestsByStates", func() {
 		var (
-			states = []string{"state1","state2","state3"}
-			vm1 models.VM
-			vm2 models.VM
-			actualVms    []*models.VM
-			err            error
+			states    = []string{"state1", "state2", "state3"}
+			vm1       models.VM
+			vm2       models.VM
+			actualVms []*models.VM
+			err       error
 		)
 
 		BeforeEach(func() {
 			vm1 = models.VM{
-				Cid: 1234567,
-				CPU: 4,
-				MemoryMb: 1024,
-				PublicVlan: 1234567,
+				Cid:         1234567,
+				CPU:         4,
+				MemoryMb:    1024,
+				PublicVlan:  1234567,
 				PrivateVlan: 12345678,
-				State: models.StateFree,
+				State:       models.StateFree,
 			}
 			vm2 = models.VM{
-				Cid: 1234568,
-				CPU: 4,
-				MemoryMb: 1024,
-				PublicVlan: 1234567,
+				Cid:         1234568,
+				CPU:         4,
+				MemoryMb:    1024,
+				PublicVlan:  1234567,
 				PrivateVlan: 12345678,
-				State: models.StateFree,
+				State:       models.StateFree,
 			}
 		})
 
@@ -276,9 +276,9 @@ var _ = Describe("VirtualGuestController", func() {
 
 	Describe("VirtualGuestByCid", func() {
 		var (
-			cid   int32
+			cid      int32
 			actualVm *models.VM
-			err        error
+			err      error
 		)
 
 		BeforeEach(func() {
@@ -324,7 +324,7 @@ var _ = Describe("VirtualGuestController", func() {
 		Context("when the delete request is normal", func() {
 			var (
 				cid int32
-				err      error
+				err error
 			)
 
 			BeforeEach(func() {
@@ -360,17 +360,17 @@ var _ = Describe("VirtualGuestController", func() {
 		Context("when the createVM request is normal", func() {
 			var (
 				vmDefinition *models.VM
-				err   error
+				err          error
 			)
 
 			BeforeEach(func() {
 				vmDefinition = &models.VM{
-					Cid: 1234567,
-					CPU: 4,
-					MemoryMb: 1024,
-					PublicVlan: 1234567,
+					Cid:         1234567,
+					CPU:         4,
+					MemoryMb:    1024,
+					PublicVlan:  1234567,
 					PrivateVlan: 12345678,
-					State: models.StateFree,
+					State:       models.StateFree,
 				}
 			})
 
@@ -403,17 +403,17 @@ var _ = Describe("VirtualGuestController", func() {
 		Context("when the updateVM request is normal", func() {
 			var (
 				vmDefinition *models.VM
-				err   error
+				err          error
 			)
 
 			BeforeEach(func() {
 				vmDefinition = &models.VM{
-					Cid: 1234567,
-					CPU: 4,
-					MemoryMb: 1024,
-					PublicVlan: 1234567,
+					Cid:         1234567,
+					CPU:         4,
+					MemoryMb:    1024,
+					PublicVlan:  1234567,
 					PrivateVlan: 12345678,
-					State: models.StateFree,
+					State:       models.StateFree,
 				}
 			})
 
@@ -446,8 +446,8 @@ var _ = Describe("VirtualGuestController", func() {
 		Context("when the updateVMWithState request is normal", func() {
 			var (
 				vmState models.VMState
-				err      error
-				cid  int32
+				err     error
+				cid     int32
 			)
 
 			BeforeEach(func() {
@@ -457,7 +457,7 @@ var _ = Describe("VirtualGuestController", func() {
 			Context("when updating the vm with Free succeeds", func() {
 				It("returns no error", func() {
 					vmState = models.VMState{
-						State:  models.StateFree,
+						State: models.StateFree,
 					}
 					err = controller.UpdateVMWithState(logger, cid, &vmState.State)
 					Expect(fakeVirtualGuestDB.ChangeVirtualGuestToFreeCallCount()).To(Equal(1))
@@ -471,7 +471,7 @@ var _ = Describe("VirtualGuestController", func() {
 
 				It("returns no error", func() {
 					vmState = models.VMState{
-						State:  models.StateProvisioning,
+						State: models.StateProvisioning,
 					}
 					err = controller.UpdateVMWithState(logger, cid, &vmState.State)
 					Expect(fakeVirtualGuestDB.ChangeVirtualGuestToProvisionCallCount()).To(Equal(1))
@@ -493,7 +493,6 @@ var _ = Describe("VirtualGuestController", func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 			})
-
 
 			Context("when updating the vm with Using fails", func() {
 				It("responds with an error", func() {

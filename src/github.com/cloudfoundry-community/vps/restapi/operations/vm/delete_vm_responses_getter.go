@@ -16,6 +16,6 @@ func (o *DeleteVMDefault) GetStatusCode() int {
 	return o._statusCode
 }
 
-func (o *DeleteVMDefault) GetPayload() *models.Error{
+func (o *DeleteVMDefault) GetPayload() *models.Error {
 	return o.Payload
 }

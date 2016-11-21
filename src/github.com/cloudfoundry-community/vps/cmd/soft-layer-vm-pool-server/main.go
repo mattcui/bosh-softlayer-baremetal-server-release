@@ -1,14 +1,14 @@
 package main
 
 import (
-	"log"
-	"os"
-	"io/ioutil"
-	"database/sql"
 	"crypto/tls"
 	"crypto/x509"
+	"database/sql"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
 
 	loads "github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
@@ -23,8 +23,8 @@ import (
 	"github.com/tedsuo/ifrit/grouper"
 	"github.com/tedsuo/ifrit/sigmon"
 
-	"code.cloudfoundry.org/lager"
 	"code.cloudfoundry.org/clock"
+	"code.cloudfoundry.org/lager"
 
 	"github.com/cloudfoundry-community/vps/restapi"
 )

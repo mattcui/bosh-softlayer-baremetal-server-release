@@ -7,14 +7,14 @@ import (
 )
 
 type VirtualGuestController struct {
-	db            db.VirtualGuestDB
+	db db.VirtualGuestDB
 }
 
 func NewVirtualGuestController(
 	db db.VirtualGuestDB,
 ) *VirtualGuestController {
 	return &VirtualGuestController{
-		db:            db,
+		db: db,
 	}
 }
 
@@ -30,17 +30,17 @@ func (h *VirtualGuestController) VirtualGuests(logger lager.Logger, publicVlan, 
 	logger = logger.Session("vms")
 
 	filter := models.VMFilter{
-		CPU: cpu,
-		MemoryMb: memory_mb,
-		PublicVlan: publicVlan,
+		CPU:         cpu,
+		MemoryMb:    memory_mb,
+		PublicVlan:  publicVlan,
 		PrivateVlan: privateVlan,
-		State: state,
+		State:       state,
 	}
 
 	return h.db.VirtualGuests(logger, filter)
 }
 
-func (h *VirtualGuestController) OrderVirtualGuest(logger lager.Logger, vmFilter *models.VMFilter) (*models.VM, error){
+func (h *VirtualGuestController) OrderVirtualGuest(logger lager.Logger, vmFilter *models.VMFilter) (*models.VM, error) {
 	logger = logger.Session("order-vm")
 	return h.db.OrderVirtualGuestToProvision(logger, *vmFilter)
 }

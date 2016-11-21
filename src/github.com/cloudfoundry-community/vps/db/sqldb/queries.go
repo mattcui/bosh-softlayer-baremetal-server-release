@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudfoundry-community/vps/models"
 	"code.cloudfoundry.org/lager"
+	"github.com/cloudfoundry-community/vps/models"
 )
 
 const (
@@ -116,8 +116,8 @@ func (db *SQLDB) countVirtualGuestsByState(logger lager.Logger, q Queryable) (de
 
 // SELECT <columns> FROM <table> WHERE ... LIMIT 1 [FOR UPDATE]
 func (db *SQLDB) one(logger lager.Logger, q Queryable, table string,
-columns ColumnList, lockRow RowLock,
-wheres string, whereBindings ...interface{},
+	columns ColumnList, lockRow RowLock,
+	wheres string, whereBindings ...interface{},
 ) *sql.Row {
 	query := fmt.Sprintf("SELECT %s FROM %s\n", strings.Join(columns, ", "), table)
 
@@ -136,8 +136,8 @@ wheres string, whereBindings ...interface{},
 
 // SELECT <columns> FROM <table> WHERE ... [FOR UPDATE]
 func (db *SQLDB) all(logger lager.Logger, q Queryable, table string,
-columns ColumnList, lockRow RowLock,
-wheres string, whereBindings ...interface{},
+	columns ColumnList, lockRow RowLock,
+	wheres string, whereBindings ...interface{},
 ) (*sql.Rows, error) {
 	query := fmt.Sprintf("SELECT %s FROM %s\n", strings.Join(columns, ", "), table)
 

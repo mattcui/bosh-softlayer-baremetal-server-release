@@ -4,7 +4,7 @@ import (
 	"github.com/cloudfoundry-community/vps/models"
 )
 
-func (o *FindVmsByDeploymentOK) GetPayload() *models.VmsResponse{
+func (o *FindVmsByDeploymentOK) GetPayload() *models.VmsResponse {
 	return o.Payload
 }
 

@@ -2,11 +2,11 @@ package sqldb
 
 import (
 	"database/sql"
-	"strings"
 	"github.com/go-openapi/strfmt"
+	"strings"
 
-	"github.com/cloudfoundry-community/vps/models"
 	"code.cloudfoundry.org/lager"
+	"github.com/cloudfoundry-community/vps/models"
 )
 
 func (db *SQLDB) VirtualGuests(logger lager.Logger, filter models.VMFilter) ([]*models.VM, error) {
@@ -27,7 +27,7 @@ func (db *SQLDB) VirtualGuests(logger lager.Logger, filter models.VMFilter) ([]*
 		values = append(values, filter.MemoryMb)
 	}
 
-	if filter.PrivateVlan >0 {
+	if filter.PrivateVlan > 0 {
 		wheres = append(wheres, "private_vlan = ?")
 		values = append(values, filter.PrivateVlan)
 	}
@@ -261,17 +261,17 @@ func (db *SQLDB) InsertVirtualGuestToPool(logger lager.Logger, virtualGuest *mod
 
 	_, err := db.insert(logger, db.db, virtualGuests,
 		SQLAttributes{
-			"cid":               virtualGuest.Cid,
-			"hostname":          virtualGuest.Hostname,
-			"ip":		     virtualGuest.IP,
-			"cpu":		     virtualGuest.CPU,
-			"memory_mb":         virtualGuest.MemoryMb,
-			"public_vlan":	     virtualGuest.PublicVlan,
-			"private_vlan":      virtualGuest.PrivateVlan,
-			"created_at":         now,
-			"updated_at":         now,
-			"deployment_name":    virtualGuest.DeploymentName,
-			"state":              stateString,
+			"cid":             virtualGuest.Cid,
+			"hostname":        virtualGuest.Hostname,
+			"ip":              virtualGuest.IP,
+			"cpu":             virtualGuest.CPU,
+			"memory_mb":       virtualGuest.MemoryMb,
+			"public_vlan":     virtualGuest.PublicVlan,
+			"private_vlan":    virtualGuest.PrivateVlan,
+			"created_at":      now,
+			"updated_at":      now,
+			"deployment_name": virtualGuest.DeploymentName,
+			"state":           stateString,
 		},
 	)
 	if err != nil {
@@ -283,7 +283,7 @@ func (db *SQLDB) InsertVirtualGuestToPool(logger lager.Logger, virtualGuest *mod
 }
 
 func (db *SQLDB) UpdateVirtualGuestInPool(logger lager.Logger, virtualGuest *models.VM) error {
-	logger = logger.Session("update-vm-in-pool", lager.Data{"cid":virtualGuest.Cid})
+	logger = logger.Session("update-vm-in-pool", lager.Data{"cid": virtualGuest.Cid})
 
 	err := db.transact(logger, func(logger lager.Logger, tx *sql.Tx) error {
 		_, err := db.fetchVMForUpdate(logger, virtualGuest.Cid, tx)
@@ -298,14 +298,14 @@ func (db *SQLDB) UpdateVirtualGuestInPool(logger lager.Logger, virtualGuest *mod
 
 		_, err = db.update(logger, tx, virtualGuests,
 			SQLAttributes{
-				"hostname": virtualGuest.Hostname,
-				"ip":  virtualGuest.IP,
-				"cpu":  virtualGuest.CPU,
-				"memory_mb":  virtualGuest.MemoryMb,
-				"deployment_name":  virtualGuest.DeploymentName,
-				"public_vlan":  virtualGuest.PublicVlan,
-				"private_vlan":  virtualGuest.PrivateVlan,
-				"updated_at": now,
+				"hostname":        virtualGuest.Hostname,
+				"ip":              virtualGuest.IP,
+				"cpu":             virtualGuest.CPU,
+				"memory_mb":       virtualGuest.MemoryMb,
+				"deployment_name": virtualGuest.DeploymentName,
+				"public_vlan":     virtualGuest.PublicVlan,
+				"private_vlan":    virtualGuest.PrivateVlan,
+				"updated_at":      now,
 			},
 			"cid = ?", virtualGuest.Cid,
 		)
@@ -474,7 +474,7 @@ func (db *SQLDB) fetchOneVMWithFilter(logger lager.Logger, filter models.VMFilte
 		values = append(values, filter.MemoryMb)
 	}
 
-	if filter.PrivateVlan >0 {
+	if filter.PrivateVlan > 0 {
 		wheres = append(wheres, "private_vlan = ?")
 		values = append(values, filter.PrivateVlan)
 	}
@@ -530,14 +530,14 @@ func (db *SQLDB) fetchVirtualGuest(logger lager.Logger, scanner RowScanner, tx Q
 	}
 
 	virtualGuest := &models.VM{
-		Cid:              cid,
-		Hostname:         hostname,
-		IP:               ip,
-		CPU:    	  cpu,
-		MemoryMb: 	  memory_mb,
-		PrivateVlan:      private_vlan,
-		PublicVlan:       public_vlan,
-		DeploymentName:   deployment_name,
+		Cid:            cid,
+		Hostname:       hostname,
+		IP:             ip,
+		CPU:            cpu,
+		MemoryMb:       memory_mb,
+		PrivateVlan:    private_vlan,
+		PublicVlan:     public_vlan,
+		DeploymentName: deployment_name,
 	}
 	switch state {
 	case "free":

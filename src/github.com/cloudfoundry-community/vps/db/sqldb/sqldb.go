@@ -4,17 +4,17 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/cloudfoundry-community/vps/models"
 	"code.cloudfoundry.org/clock"
 	"code.cloudfoundry.org/lager"
+	"github.com/cloudfoundry-community/vps/models"
 	"github.com/go-sql-driver/mysql"
 	"github.com/lib/pq"
 )
 
 type SQLDB struct {
-	db                     *sql.DB
-	clock                  clock.Clock
-	flavor                 string
+	db     *sql.DB
+	clock  clock.Clock
+	flavor string
 }
 
 type RowScanner interface {
@@ -34,14 +34,14 @@ const (
 )
 
 func NewSQLDB(
-db *sql.DB,
-clock clock.Clock,
-flavor string,
+	db *sql.DB,
+	clock clock.Clock,
+	flavor string,
 ) *SQLDB {
 	return &SQLDB{
-		db: db,
-		clock:                  clock,
-		flavor:                 flavor,
+		db:     db,
+		clock:  clock,
+		flavor: flavor,
 	}
 }
 

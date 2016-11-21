@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudfoundry-community/vps/db"
-	"github.com/cloudfoundry-community/vps/db/sqldb"
 	"code.cloudfoundry.org/clock"
 	"code.cloudfoundry.org/lager"
 	"code.cloudfoundry.org/runtimeschema/metric"
+	"github.com/cloudfoundry-community/vps/db"
+	"github.com/cloudfoundry-community/vps/db/sqldb"
 )
 
 const (
@@ -26,12 +26,12 @@ type Manager struct {
 }
 
 func NewManager(
-logger lager.Logger,
-sqlDB db.DB,
-rawSQLDB *sql.DB,
-migrationsDone chan<- struct{},
-clock clock.Clock,
-databaseDriver string,
+	logger lager.Logger,
+	sqlDB db.DB,
+	rawSQLDB *sql.DB,
+	migrationsDone chan<- struct{},
+	clock clock.Clock,
+	databaseDriver string,
 ) Manager {
 	return Manager{
 		logger:         logger,
@@ -62,29 +62,29 @@ func (m Manager) Run(signals <-chan os.Signal, ready chan<- struct{}) error {
 }
 
 func (m *Manager) performMigration(
-logger lager.Logger,
-errorChan chan error,
-readyChan chan<- struct{},
+	logger lager.Logger,
+	errorChan chan error,
+	readyChan chan<- struct{},
 ) {
 	migrateStart := m.clock.Now()
 
 	logger.Info("running-migration", lager.Data{
-		"init":   "virtual_guest_db",
+		"init": "virtual_guest_db",
 	})
 
-        if checkTables(logger, m.rawSQLDB) {
-	       err := createTables(logger, m.rawSQLDB, m.databaseDriver)
-	       if err != nil {
-		       errorChan <- err
-		       return
-	       }
+	if checkTables(logger, m.rawSQLDB) {
+		err := createTables(logger, m.rawSQLDB, m.databaseDriver)
+		if err != nil {
+			errorChan <- err
+			return
+		}
 
-	       err = createIndices(logger, m.rawSQLDB)
-	       if err != nil {
-		       errorChan <- err
-		       return
-	       }
-        }
+		err = createIndices(logger, m.rawSQLDB)
+		if err != nil {
+			errorChan <- err
+			return
+		}
+	}
 
 	logger.Debug("migrations-finished")
 
@@ -101,7 +101,6 @@ func (m *Manager) finish(logger lager.Logger, ready chan<- struct{}) {
 	close(m.migrationsDone)
 	logger.Info("finished-migrations")
 }
-
 
 func checkTables(logger lager.Logger, db *sql.DB) bool {
 	var value int
@@ -169,6 +168,3 @@ var createVirtualGuestsIndices = []string{
 	`CREATE INDEX virtual_guests_cid_idx ON virtual_guests (cid)`,
 	`CREATE INDEX virtual_guests_state_idx ON virtual_guests (state)`,
 }
-
-
-

@@ -82,9 +82,9 @@ func (t *VM) ValidateTransitionTo(to State) error {
 	from := t.State
 	switch to {
 	case StateFree:
-		valid = ( from == StateUsing || from == StateProvisioning )
+		valid = (from == StateUsing || from == StateProvisioning)
 	case StateProvisioning:
-		valid = ( from == StateFree || from == StateUsing )
+		valid = (from == StateFree || from == StateUsing)
 	case StateUnknown:
 		valid = true
 	case StateUsing:

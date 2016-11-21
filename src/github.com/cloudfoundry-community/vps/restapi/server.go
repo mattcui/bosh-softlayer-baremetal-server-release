@@ -14,8 +14,8 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	graceful "github.com/tylerb/graceful"
 
-	"github.com/cloudfoundry-community/vps/db"
 	"code.cloudfoundry.org/lager"
+	"github.com/cloudfoundry-community/vps/db"
 	"github.com/cloudfoundry-community/vps/restapi/operations"
 )
 
@@ -56,10 +56,10 @@ func (s *Server) ConfigureFlags() {
 
 // Server for the soft layer VM pool API
 type Server struct {
-	DBDriver string `long:"databaseDriver" default:"postgres"`
-	DBConn string `long:"databaseConnectionString"`
-	MaxDatabaseConnections int `long:"MaxDatabaseConnections" default:"200"`
-	SqlCACertFile string `long:"sqlCACertFile"`
+	DBDriver               string `long:"databaseDriver" default:"postgres"`
+	DBConn                 string `long:"databaseConnectionString"`
+	MaxDatabaseConnections int    `long:"MaxDatabaseConnections" default:"200"`
+	SqlCACertFile          string `long:"sqlCACertFile"`
 
 	LogLevel string `long:"logLevel" default:"debug"`
 
@@ -113,7 +113,7 @@ func (s *Server) SetAPI(api *operations.SoftLayerVMPoolAPI) {
 
 	s.api = api
 	s.api.Logger = log.Printf
-	s.handler = configureAPI(api,nil,nil)
+	s.handler = configureAPI(api, nil, nil)
 }
 
 func (s *Server) hasScheme(scheme string) bool {

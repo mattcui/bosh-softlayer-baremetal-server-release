@@ -4,12 +4,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
+	"code.cloudfoundry.org/lager/lagertest"
+	"github.com/cloudfoundry-community/vps/models"
 	"github.com/cloudfoundry-community/vps/restapi/handlers"
 	"github.com/cloudfoundry-community/vps/restapi/handlers/fake_controllers"
-	"github.com/cloudfoundry-community/vps/models"
 	"github.com/cloudfoundry-community/vps/restapi/operations/vm"
 	"github.com/go-openapi/runtime/middleware"
-	"code.cloudfoundry.org/lager/lagertest"
 )
 
 var _ = Describe("VmHandlerFunc", func() {
@@ -30,9 +30,9 @@ var _ = Describe("VmHandlerFunc", func() {
 
 	Describe("ListVM", func() {
 		var (
-			vm1          models.VM
-			vm2          models.VM
-			params	     vm.ListVMParams
+			vm1    models.VM
+			vm2    models.VM
+			params vm.ListVMParams
 		)
 
 		BeforeEach(func() {
@@ -55,7 +55,7 @@ var _ = Describe("VmHandlerFunc", func() {
 
 			It("returns a list of virtual guests", func() {
 				Expect(controller.AllVirtualGuestsCallCount()).To(Equal(1))
-				listVMOK, ok:=responseResponder.(*vm.ListVMOK)
+				listVMOK, ok := responseResponder.(*vm.ListVMOK)
 				Expect(ok).To(BeTrue())
 				Expect(listVMOK.GetPayload().Vms).To(Equal(vms))
 			})
@@ -70,7 +70,7 @@ var _ = Describe("VmHandlerFunc", func() {
 			})
 
 			It("returns 404 status code", func() {
-				listVmNotFound, ok:=responseResponder.(*vm.ListVMNotFound)
+				listVmNotFound, ok := responseResponder.(*vm.ListVMNotFound)
 				Expect(ok).To(BeTrue())
 				Expect(listVmNotFound.GetStatusCode()).To(Equal(404))
 			})
@@ -82,7 +82,7 @@ var _ = Describe("VmHandlerFunc", func() {
 			})
 
 			It("provides relevant error information", func() {
-				listVmDefault, ok:=responseResponder.(*vm.ListVMDefault)
+				listVmDefault, ok := responseResponder.(*vm.ListVMDefault)
 				Expect(ok).To(BeTrue())
 				Expect(listVmDefault.GetStatusCode()).To(Equal(500))
 				Expect(listVmDefault.GetPayload()).To(Equal(models.ErrUnknownError))
@@ -119,7 +119,7 @@ var _ = Describe("VmHandlerFunc", func() {
 			})
 
 			It("returns the virtual guest", func() {
-				getVmByCidOK, ok:=responseResponder.(*vm.GetVMByCidOK)
+				getVmByCidOK, ok := responseResponder.(*vm.GetVMByCidOK)
 				Expect(ok).To(BeTrue())
 				Expect(getVmByCidOK.GetPayload().VM).To(Equal(vm1))
 			})
@@ -131,7 +131,7 @@ var _ = Describe("VmHandlerFunc", func() {
 			})
 
 			It("returns 404 status code", func() {
-				getVmByCidNotFound, ok:=responseResponder.(*vm.GetVMByCidNotFound)
+				getVmByCidNotFound, ok := responseResponder.(*vm.GetVMByCidNotFound)
 				Expect(ok).To(BeTrue())
 				Expect(getVmByCidNotFound.GetStatusCode()).To(Equal(404))
 			})
@@ -143,7 +143,7 @@ var _ = Describe("VmHandlerFunc", func() {
 			})
 
 			It("provides relevant error information", func() {
-				getVmByCidDefault, ok:=responseResponder.(*vm.GetVMByCidDefault)
+				getVmByCidDefault, ok := responseResponder.(*vm.GetVMByCidDefault)
 				Expect(ok).To(BeTrue())
 				Expect(getVmByCidDefault.GetStatusCode()).To(Equal(500))
 				Expect(getVmByCidDefault.GetPayload()).To(Equal(models.ErrUnknownError))
@@ -172,7 +172,7 @@ var _ = Describe("VmHandlerFunc", func() {
 					_, cid := controller.DeleteVMArgsForCall(0)
 					Expect(cid).To(Equal(params.Cid))
 
-					deleteVmNoContent, ok:=responseResponder.(*vm.DeleteVMNoContent)
+					deleteVmNoContent, ok := responseResponder.(*vm.DeleteVMNoContent)
 					Expect(ok).To(BeTrue())
 					Expect(deleteVmNoContent.GetPayload()).To(Equal("vm removed"))
 				})
@@ -184,7 +184,7 @@ var _ = Describe("VmHandlerFunc", func() {
 				})
 
 				It("provides relevant error information", func() {
-					deleteVmDefault, ok:=responseResponder.(*vm.DeleteVMDefault)
+					deleteVmDefault, ok := responseResponder.(*vm.DeleteVMDefault)
 					Expect(ok).To(BeTrue())
 					Expect(deleteVmDefault.GetStatusCode()).To(Equal(500))
 					Expect(deleteVmDefault.GetPayload()).To(Equal(models.ErrUnknownError))
@@ -195,19 +195,19 @@ var _ = Describe("VmHandlerFunc", func() {
 
 	Describe("AddVM", func() {
 		var (
-			vm1  *models.VM
+			vm1    *models.VM
 			params vm.AddVMParams
 		)
 
 		BeforeEach(func() {
-			vm1 = &models.VM {
-				Cid: 1234567,
-				CPU: 4,
-				MemoryMb: 1024,
-				IP: "10.0.0.1",
-				Hostname: "fake.test.com",
+			vm1 = &models.VM{
+				Cid:         1234567,
+				CPU:         4,
+				MemoryMb:    1024,
+				IP:          "10.0.0.1",
+				Hostname:    "fake.test.com",
 				PrivateVlan: 1234567,
-				PublicVlan: 1234568,
+				PublicVlan:  1234568,
 			}
 			params = vm.NewAddVMParams()
 			params.Body = vm1
@@ -223,7 +223,7 @@ var _ = Describe("VmHandlerFunc", func() {
 				_, actualVm := controller.CreateVMArgsForCall(0)
 				Expect(actualVm).To(Equal(vm1))
 
-				addVmOk, ok:=responseResponder.(*vm.AddVMOK)
+				addVmOk, ok := responseResponder.(*vm.AddVMOK)
 				Expect(ok).To(BeTrue())
 				Expect(addVmOk.GetPayload()).To(Equal("added successfully"))
 			})
@@ -235,7 +235,7 @@ var _ = Describe("VmHandlerFunc", func() {
 			})
 
 			It("responds with an error", func() {
-				addVmDefault, ok:=responseResponder.(*vm.AddVMDefault)
+				addVmDefault, ok := responseResponder.(*vm.AddVMDefault)
 				Expect(ok).To(BeTrue())
 				Expect(addVmDefault.GetStatusCode()).To(Equal(500))
 				Expect(addVmDefault.GetPayload()).To(Equal(models.ErrUnknownError))

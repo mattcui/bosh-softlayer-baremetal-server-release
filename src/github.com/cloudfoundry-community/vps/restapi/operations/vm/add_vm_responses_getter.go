@@ -12,6 +12,6 @@ func (o *AddVMDefault) GetStatusCode() int {
 	return o._statusCode
 }
 
-func (o *AddVMDefault) GetPayload() *models.Error{
+func (o *AddVMDefault) GetPayload() *models.Error {
 	return o.Payload
 }

@@ -7,11 +7,11 @@ import (
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 
+	"github.com/cloudfoundry-community/vps/controllers"
+	"github.com/cloudfoundry-community/vps/db"
+	"github.com/cloudfoundry-community/vps/restapi/handlers"
 	"github.com/cloudfoundry-community/vps/restapi/operations"
 	"github.com/cloudfoundry-community/vps/restapi/operations/vm"
-	"github.com/cloudfoundry-community/vps/restapi/handlers"
-	"github.com/cloudfoundry-community/vps/db"
-	"github.com/cloudfoundry-community/vps/controllers"
 
 	"code.cloudfoundry.org/lager"
 )
@@ -24,8 +24,8 @@ func configureFlags(api *operations.SoftLayerVMPoolAPI) {
 }
 
 func configureAPI(api *operations.SoftLayerVMPoolAPI,
-logger lager.Logger,
-db db.DB,
+	logger lager.Logger,
+	db db.DB,
 ) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
@@ -41,7 +41,7 @@ db db.DB,
 	api.JSONProducer = runtime.JSONProducer()
 
 	vmController := controllers.NewVirtualGuestController(db)
-	vmHandler := handlers.NewVmHandler(logger,vmController)
+	vmHandler := handlers.NewVmHandler(logger, vmController)
 
 	api.VMAddVMHandler = vm.AddVMHandlerFunc(vmHandler.AddVM)
 	api.VMDeleteVMHandler = vm.DeleteVMHandlerFunc(vmHandler.DeleteVM)

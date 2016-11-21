@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"github.com/cloudfoundry-community/vps/models"
-	"github.com/go-openapi/runtime/middleware"
 	"github.com/cloudfoundry-community/vps/restapi/operations/vm"
+	"github.com/go-openapi/runtime/middleware"
 
 	"code.cloudfoundry.org/lager"
 )
+
 //go:generate counterfeiter -o fake_controllers/fake_virtualguest_controller.go . VirtualGuestController
 type VirtualGuestController interface {
 	AllVirtualGuests(logger lager.Logger) ([]*models.VM, error)
@@ -22,21 +23,21 @@ type VirtualGuestController interface {
 }
 
 func NewVmHandler(
-logger lager.Logger,
-controller VirtualGuestController,
+	logger lager.Logger,
+	controller VirtualGuestController,
 ) *VMHandler {
 	return &VMHandler{
-		logger: logger,
+		logger:     logger,
 		controller: controller,
 	}
 }
 
 type VMHandler struct {
-	logger lager.Logger
+	logger     lager.Logger
 	controller VirtualGuestController
 }
 
-func (h *VMHandler) AddVM (params vm.AddVMParams) middleware.Responder {
+func (h *VMHandler) AddVM(params vm.AddVMParams) middleware.Responder {
 	var err error
 	h.logger = h.logger.Session("add-vm")
 
@@ -68,7 +69,7 @@ func (h *VMHandler) OrderVmByFilter(params vm.OrderVMByFilterParams) middleware.
 	return vm.NewOrderVMByFilterOK().WithPayload(response)
 }
 
-func (h *VMHandler) UpdateVM (params vm.UpdateVMParams) middleware.Responder {
+func (h *VMHandler) UpdateVM(params vm.UpdateVMParams) middleware.Responder {
 	var err error
 	h.logger = h.logger.Session("update-vm")
 
@@ -83,7 +84,7 @@ func (h *VMHandler) UpdateVM (params vm.UpdateVMParams) middleware.Responder {
 	return vm.NewUpdateVMOK().WithPayload("updated successfully")
 }
 
-func (h *VMHandler) DeleteVM(params vm.DeleteVMParams)  middleware.Responder {
+func (h *VMHandler) DeleteVM(params vm.DeleteVMParams) middleware.Responder {
 	var err error
 	h.logger = h.logger.Session("delete-vm")
 
@@ -97,14 +98,13 @@ func (h *VMHandler) DeleteVM(params vm.DeleteVMParams)  middleware.Responder {
 	return vm.NewDeleteVMNoContent().WithPayload("vm removed")
 }
 
-
 func (h *VMHandler) GetVMByCid(params vm.GetVMByCidParams) middleware.Responder {
 	var err error
 	h.logger = h.logger.Session("get-vm-by-cid")
 
 	response := &models.VMResponse{}
 
-	response.VM, err = h.controller.VirtualGuestByCid(h.logger,params.Cid)
+	response.VM, err = h.controller.VirtualGuestByCid(h.logger, params.Cid)
 	if err != nil {
 		unExpectedResponse := vm.NewGetVMByCidDefault(500)
 		unExpectedResponse.SetPayload(models.ConvertError(err))
@@ -123,7 +123,6 @@ func (h *VMHandler) ListVM(params vm.ListVMParams) middleware.Responder {
 	h.logger = h.logger.Session("list-vms")
 
 	response := &models.VmsResponse{}
-
 
 	response.Vms, err = h.controller.AllVirtualGuests(h.logger)
 	if err != nil {
@@ -144,7 +143,7 @@ func (h *VMHandler) UpdateVMWithState(params vm.UpdateVMWithStateParams) middlew
 
 	vmId := params.Cid
 	if vmId == 0 {
-		 return vm.NewUpdateVMWithStateNotFound()
+		return vm.NewUpdateVMWithStateNotFound()
 	}
 
 	updateData := params.Body

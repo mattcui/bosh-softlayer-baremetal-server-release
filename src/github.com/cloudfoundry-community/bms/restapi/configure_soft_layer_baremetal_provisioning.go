@@ -10,8 +10,8 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
-	"github.com/cloudfoundry-community/bms/restapi/operations"
 	"github.com/cloudfoundry-community/bms/handlers"
+	"github.com/cloudfoundry-community/bms/restapi/operations"
 
 	"log"
 )

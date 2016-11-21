@@ -14,7 +14,7 @@ const (
 	FATAL = "fatal"
 )
 
-func New(component string,logLevel string) (lager.Logger, *lager.ReconfigurableSink) {
+func New(component string, logLevel string) (lager.Logger, *lager.ReconfigurableSink) {
 	var minLagerLogLevel lager.LogLevel
 	switch logLevel {
 	case DEBUG:
