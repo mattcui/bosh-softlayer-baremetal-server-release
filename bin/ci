@@ -11,6 +11,7 @@
 
   #export GOPATH=$base_gopath:$GOPATH
   echo "GOPATH : ${GOPATH}"
+  export PATH=${GOPATH}/bin:$PATH
 
   go get github.com/tools/godep
   go get github.com/onsi/ginkgo/ginkgo
