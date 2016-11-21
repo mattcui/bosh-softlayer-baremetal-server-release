@@ -17,11 +17,10 @@ type Args struct {
 	DatabaseConnectionString              string
 }
 
-
 var (
 	vpsConfig string
 	vpsArgs             Args
-	session	            gexec.Session
+	session	            *gexec.Session
 	err 		error
 
 )
@@ -42,7 +41,7 @@ var _ = Describe("Virtual Pool Server", func() {
 		}
 
 		command := exec.Command(string(vpsConfig), vpsArgs.argSlice()...)
-		session, err = gexec.Start(command, GinkgoWriter, GinkgoWriter)
+		session, err = gexec.git (command, GinkgoWriter, GinkgoWriter)
 		Ω(err).ShouldNot(HaveOccurred())
 
 		resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))

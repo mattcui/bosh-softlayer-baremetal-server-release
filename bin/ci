@@ -22,5 +22,5 @@
   ginkgo -r -p --noisyPendings -focus=main_test
 
   echo -e "\n Vetting packages for potential issues..."
-  go tool vet main action softlayer api common test_helpers integration
+  go tool vet cmd action softlayer api common test_helpers integration
 )
