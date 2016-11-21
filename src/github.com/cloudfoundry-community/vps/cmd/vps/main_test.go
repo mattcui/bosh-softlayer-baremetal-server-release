@@ -46,8 +46,8 @@ var _ = Describe("Virtual Pool Server", func() {
 		resp, err := http.Get(fmt.Sprintf("http://%s:%s/v2/vms", vpsArgs.Host, vpsArgs.Port))
 		defer resp.Body.Close()
 
+		Expect(err).To(HaveOccurred())
 		Expect(resp.StatusCode).To(Equal(200))
-
 	})
 
 	AfterEach(func() {
