@@ -1,0 +1,63 @@
+#!/bin/bash -e
+
+ RUN_DIR=/var/vcap/sys/run/vps
+ LOG_DIR=/var/vcap/sys/log/vps
+ CONF_DIR=/var/vcap/jobs/vps/config
+ DATA_DIR=/var/vcap/data/vps
+ TMP_DIR=$DATA_DIR/tmp
+ JOB_DIR=/var/vcap/jobs/vps
+
+ PIDFILE=$RUN_DIR/vps.pid
+
+ source $JOB_DIR/bin/pid_utils.sh
+
+ case $1 in
+
+   start)
+     pid_guard $PIDFILE "vps"
+
+     mkdir -p $RUN_DIR
+     chown -R vcap:vcap $RUN_DIR
+
+     mkdir -p $LOG_DIR
+     chown -R vcap:vcap $LOG_DIR
+
+     mkdir -p $DATA_DIR
+     chown -R vcap:vcap $DATA_DIR
+
+     mkdir -p $TMP_DIR
+     chown -R vcap:vcap $TMP_DIR
+
+     if running_in_container; then
+         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
+     else
+         # TCP_FIN_TIMEOUT
+         # By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+         # resources available for new connections.
+
+         echo 10 > /proc/sys/net/ipv4/tcp_fin_timeout
+
+         # TCP_TW_REUSE
+         # This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+
+         echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+     fi
+
+     # Allowed number of open file descriptors
+     ulimit -n 100000
+
+     exec chpst -u vcap:vcap bash -c  '/var/vcap/jobs/vps/bin/vps_as_vcap'
+
+     ;;
+
+   stop)
+     kill_and_wait $PIDFILE
+
+     ;;
+
+   *)
+     echo "Usage: vps_ctl {start|stop}"
+
+     ;;
+
+ esac

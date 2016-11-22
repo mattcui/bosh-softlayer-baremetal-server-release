@@ -1,0 +1,5 @@
+check process vps
+  with pidfile /var/vcap/sys/run/vps/vps.pid
+  start program "/var/vcap/jobs/vps/bin/vps_ctl start"
+  stop program "/var/vcap/jobs/vps/bin/vps_ctl stop"
+  group vcap

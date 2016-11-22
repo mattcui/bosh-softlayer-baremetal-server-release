@@ -1,0 +1,8 @@
+---
+name: vps
+
+dependencies:
+  - golang_1.7
+
+files:
+- "**/*"

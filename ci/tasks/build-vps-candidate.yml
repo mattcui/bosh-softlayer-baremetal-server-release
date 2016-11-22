@@ -1,0 +1,10 @@
+---
+platform: linux
+image: docker:///cloudfoundry/bosh-lite-ci
+inputs:
+  - name: vps-release
+  - name: version-semver
+outputs:
+  - name: candidate
+run:
+  path: vps-release/ci/tasks/build-vps-candidate.sh

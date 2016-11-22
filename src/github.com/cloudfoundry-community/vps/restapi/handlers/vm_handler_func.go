@@ -39,7 +39,7 @@ type VMHandler struct {
 
 func (h *VMHandler) AddVM(params vm.AddVMParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("add-vm")
+	h.logger = h.logger.ReSession("add-vm")
 
 	request := params.Body
 
@@ -54,16 +54,20 @@ func (h *VMHandler) AddVM(params vm.AddVMParams) middleware.Responder {
 
 func (h *VMHandler) OrderVmByFilter(params vm.OrderVMByFilterParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("order-vm-by-filter")
+	h.logger = h.logger.ReSession("order-vm-by-filter")
 
 	response := &models.VMResponse{}
 	request := params.Body
 
 	response.VM, err = h.controller.OrderVirtualGuest(h.logger, request)
 	if err != nil {
-		unExpectedResponse := vm.NewOrderVMByFilterDefault(500)
-		unExpectedResponse.SetPayload(models.ConvertError(err))
-		return unExpectedResponse
+		if models.ConvertError(err).Equal(models.ErrResourceNotFound){
+			return vm.NewOrderVMByFilterNotFound()
+		} else {
+			unExpectedResponse := vm.NewOrderVMByFilterDefault(500)
+			unExpectedResponse.SetPayload(models.ConvertError(err))
+			return unExpectedResponse
+		}
 	}
 
 	return vm.NewOrderVMByFilterOK().WithPayload(response)
@@ -71,7 +75,7 @@ func (h *VMHandler) OrderVmByFilter(params vm.OrderVMByFilterParams) middleware.
 
 func (h *VMHandler) UpdateVM(params vm.UpdateVMParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("update-vm")
+	h.logger = h.logger.ReSession("update-vm")
 
 	request := params.Body
 
@@ -86,13 +90,17 @@ func (h *VMHandler) UpdateVM(params vm.UpdateVMParams) middleware.Responder {
 
 func (h *VMHandler) DeleteVM(params vm.DeleteVMParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("delete-vm")
+	h.logger = h.logger.ReSession("delete-vm")
 
 	err = h.controller.DeleteVM(h.logger, params.Cid)
 	if err != nil {
-		unExpectedResponse := vm.NewDeleteVMDefault(500)
-		unExpectedResponse.SetPayload(models.ConvertError(err))
-		return unExpectedResponse
+		if models.ConvertError(err).Equal(models.ErrResourceNotFound){
+			return vm.NewDeleteVMNotFound()
+		} else {
+			unExpectedResponse := vm.NewDeleteVMDefault(500)
+			unExpectedResponse.SetPayload(models.ConvertError(err))
+			return unExpectedResponse
+		}
 	}
 
 	return vm.NewDeleteVMNoContent().WithPayload("vm removed")
@@ -100,19 +108,19 @@ func (h *VMHandler) DeleteVM(params vm.DeleteVMParams) middleware.Responder {
 
 func (h *VMHandler) GetVMByCid(params vm.GetVMByCidParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("get-vm-by-cid")
+	h.logger = h.logger.ReSession("get-vm-by-cid")
 
 	response := &models.VMResponse{}
 
 	response.VM, err = h.controller.VirtualGuestByCid(h.logger, params.Cid)
 	if err != nil {
-		unExpectedResponse := vm.NewGetVMByCidDefault(500)
-		unExpectedResponse.SetPayload(models.ConvertError(err))
-		return unExpectedResponse
-	}
-	if response.VM == nil {
-		getVMByCidNotFound := vm.NewGetVMByCidNotFound()
-		return getVMByCidNotFound
+		if models.ConvertError(err).Equal(models.ErrResourceNotFound){
+			return vm.NewGetVMByCidNotFound()
+		} else {
+			unExpectedResponse := vm.NewGetVMByCidDefault(500)
+			unExpectedResponse.SetPayload(models.ConvertError(err))
+			return unExpectedResponse
+		}
 	}
 
 	return vm.NewGetVMByCidOK().WithPayload(response)
@@ -120,7 +128,7 @@ func (h *VMHandler) GetVMByCid(params vm.GetVMByCidParams) middleware.Responder 
 
 func (h *VMHandler) ListVM(params vm.ListVMParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("list-vms")
+	h.logger = h.logger.ReSession("list-vms")
 
 	response := &models.VmsResponse{}
 
@@ -139,19 +147,19 @@ func (h *VMHandler) ListVM(params vm.ListVMParams) middleware.Responder {
 
 func (h *VMHandler) UpdateVMWithState(params vm.UpdateVMWithStateParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("update-vm-with-state")
+	h.logger = h.logger.ReSession("update-vm-with-state")
 
 	vmId := params.Cid
-	if vmId == 0 {
-		return vm.NewUpdateVMWithStateNotFound()
-	}
-
 	updateData := params.Body
 	err = h.controller.UpdateVMWithState(h.logger, vmId, &updateData.State)
 	if err != nil {
-		unExpectedResponse := vm.NewListVMDefault(500)
-		unExpectedResponse.SetPayload(models.ConvertError(err))
-		return unExpectedResponse
+		if models.ConvertError(err).Equal(models.ErrResourceNotFound){
+			return vm.NewUpdateVMWithStateNotFound()
+		} else {
+			unExpectedResponse := vm.NewUpdateVMWithStateDefault(500)
+			unExpectedResponse.SetPayload(models.ConvertError(err))
+			return unExpectedResponse
+		}
 	}
 
 	return vm.NewUpdateVMOK().WithPayload("updated successfully")
@@ -159,7 +167,7 @@ func (h *VMHandler) UpdateVMWithState(params vm.UpdateVMWithStateParams) middlew
 
 func (h *VMHandler) FindVmsByFilters(params vm.FindVmsByFiltersParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("find-vms-by-filter")
+	h.logger = h.logger.ReSession("find-vms-by-filter")
 
 	response := &models.VmsResponse{}
 	request := params.Body
@@ -180,7 +188,7 @@ func (h *VMHandler) FindVmsByFilters(params vm.FindVmsByFiltersParams) middlewar
 
 func (h *VMHandler) FindVmsByDeployment(params vm.FindVmsByDeploymentParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("find-vms-by-deployment")
+	h.logger = h.logger.ReSession("find-vms-by-deployment")
 
 	response := &models.VmsResponse{}
 	request := params.Deployment
@@ -197,7 +205,7 @@ func (h *VMHandler) FindVmsByDeployment(params vm.FindVmsByDeploymentParams) mid
 
 func (h *VMHandler) FindVmsByStates(params vm.FindVmsByStatesParams) middleware.Responder {
 	var err error
-	h.logger = h.logger.Session("find-vms-by-state")
+	h.logger = h.logger.ReSession("find-vms-by-state")
 
 	response := &models.VmsResponse{}
 	request := params.States

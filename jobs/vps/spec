@@ -1,0 +1,42 @@
+---
+name: vps
+templates:
+  vps_ctl.erb: bin/vps_ctl
+  vps_as_vcap.erb: bin/vps_as_vcap
+  pid_utils.sh.erb: bin/pid_utils.sh
+
+packages:
+  - vps
+
+properties:
+  vps.log_level:
+    description: "Log level for vps"
+    default: "debug"
+  vps.host:
+    description: "host at which to serve API requests"
+    default: "127.0.0.1"
+  vps.port:
+    description: "port at which to serve API requests"
+    default: "8889"
+  vps.sql.db_host:
+    description: "Host for SQL backend"
+    default: "127.0.0.1"
+  vps.sql.db_port:
+    description: "Port for SQL backend"
+    default: "5432"
+  vps.sql.db_schema:
+    description: "Database name to use for connecting to SQL backend"
+    default: ""
+  vps.sql.db_username:
+    description: "Username to use for connecting to SQL backend"
+    default: "postgres"
+  vps.sql.db_password:
+    description: "Password to use for connecting to SQL backend"
+    default: "postges"
+  vps.sql.db_driver:
+    description: "Database driver to use for SQL backend (for example: mysql,postgres)"
+    default: postgres
+  vps.sql.db_connection_string:
+    description: "Connection string to use for SQL backend. DEPRECATED, use db_{host,port,schema,username,password} instead"
+    default: ""
+

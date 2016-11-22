@@ -84,7 +84,7 @@ func (db *SQLDB) VirtualGuests(logger lager.Logger, filter models.VMFilter) ([]*
 }
 
 func (db *SQLDB) OrderVirtualGuestToProvision(logger lager.Logger, filter models.VMFilter) (*models.VM, error) {
-	logger = logger.Session("order-free-vmr", lager.Data{"filter": filter})
+	logger = logger.Session("order-free-vm", lager.Data{"filter": filter})
 	logger.Debug("starting")
 	defer logger.Debug("complete")
 
@@ -502,7 +502,7 @@ func (db *SQLDB) fetchOneVMWithFilter(logger lager.Logger, filter models.VMFilte
 	default:
 	}
 
-	row := db.one(logger, db.db, virtualGuests,
+	row := db.one(logger, tx, virtualGuests,
 		virtualGuestColumns, LockRow,
 		strings.Join(wheres, " AND "), values...,
 	)

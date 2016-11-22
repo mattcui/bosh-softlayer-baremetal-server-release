@@ -19,16 +19,12 @@ func NewVirtualGuestController(
 }
 
 func (h *VirtualGuestController) AllVirtualGuests(logger lager.Logger) ([]*models.VM, error) {
-	logger = logger.Session("vms")
-
 	filter := models.VMFilter{}
 
 	return h.db.VirtualGuests(logger, filter)
 }
 
 func (h *VirtualGuestController) VirtualGuests(logger lager.Logger, publicVlan, privateVlan, cpu, memory_mb int32, state models.State) ([]*models.VM, error) {
-	logger = logger.Session("vms")
-
 	filter := models.VMFilter{
 		CPU:         cpu,
 		MemoryMb:    memory_mb,
@@ -40,26 +36,20 @@ func (h *VirtualGuestController) VirtualGuests(logger lager.Logger, publicVlan, 
 	return h.db.VirtualGuests(logger, filter)
 }
 
-func (h *VirtualGuestController) OrderVirtualGuest(logger lager.Logger, vmFilter *models.VMFilter) (*models.VM, error) {
-	logger = logger.Session("order-vm")
+func (h *VirtualGuestController) OrderVirtualGuest(logger lager.Logger, vmFilter *models.VMFilter) (*models.VM, error){
 	return h.db.OrderVirtualGuestToProvision(logger, *vmFilter)
 }
 
 func (h *VirtualGuestController) VirtualGuestsByDeployments(logger lager.Logger, names []string) ([]*models.VM, error) {
-	logger = logger.Session("vms-by-deployments")
-
 	return h.db.VirtualGuestsByDeployments(logger, names)
 }
 
 func (h *VirtualGuestController) VirtualGuestsByStates(logger lager.Logger, states []string) ([]*models.VM, error) {
-	logger = logger.Session("vms-by-states")
-
 	return h.db.VirtualGuestsByStates(logger, states)
 }
 
 func (h *VirtualGuestController) CreateVM(logger lager.Logger, vmDefinition *models.VM) error {
 	var err error
-	logger = logger.Session("create-vm")
 
 	err = h.db.InsertVirtualGuestToPool(logger, vmDefinition)
 	if err != nil {
@@ -70,19 +60,15 @@ func (h *VirtualGuestController) CreateVM(logger lager.Logger, vmDefinition *mod
 }
 
 func (h *VirtualGuestController) UpdateVM(logger lager.Logger, vmDefinition *models.VM) error {
-	logger = logger.Session("update-vm")
 	return h.db.UpdateVirtualGuestInPool(logger, vmDefinition)
 }
 
 func (h *VirtualGuestController) DeleteVM(logger lager.Logger, cid int32) error {
-	logger = logger.Session("delete-vm")
-
 	return h.db.DeleteVirtualGuestFromPool(logger, cid)
 }
 
 func (h *VirtualGuestController) UpdateVMWithState(logger lager.Logger, cid int32, updateData *models.State) error {
 	var err error
-	logger = logger.Session("update-vm-with-state")
 
 	switch *updateData {
 	case models.StateUsing:
@@ -101,6 +87,5 @@ func (h *VirtualGuestController) UpdateVMWithState(logger lager.Logger, cid int3
 }
 
 func (h *VirtualGuestController) VirtualGuestByCid(logger lager.Logger, cid int32) (*models.VM, error) {
-	logger = logger.Session("vm-by-guid")
 	return h.db.VirtualGuestByCID(logger, cid)
 }

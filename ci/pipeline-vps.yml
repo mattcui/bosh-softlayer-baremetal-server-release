@@ -1,0 +1,42 @@
+resources:
+- name: vps-release-in
+  type: git
+  source:
+    uri: https://github.com/cloudfoundry-community/bosh-softlayer-baremetal-server-release.git
+    branch: develop
+    ignore_paths:
+        - .final_builds/**/*.yml
+        - releases/**/*.yml
+
+- name: version-semver
+  type: semver
+  source:
+    key:               current-version
+    bucket:            {{s3_pipeline_bucket}}
+    access_key_id:     {{s3_access_key_id}}
+    secret_access_key: {{s3_secret_access_key}}
+
+- name: vps-dev-artifacts
+  type: s3
+  source:
+    regexp: vps-(.*).tgz
+    bucket: {{s3_bosh_softlayer_tools_bucket}}
+    access_key_id: {{s3_access_key_id}}
+    secret_access_key: {{s3_secret_access_key}}
+
+jobs:
+- name: build-vps-candidate
+  serial: true
+  plan:
+  - aggregate:
+    - {trigger: true, get: vps-release, resource: vps-release-in}
+    - {trigger: false, get: version-semver, params: {bump: patch}, resource: version-semver}
+
+  - put: version-semver
+    params: {file: version-semver/number}
+
+  - task: build-candidate
+    file: vps-release/ci/tasks/build-vps-candidate.yml
+
+  - put: vps-dev-artifacts
+    params: {file: candidate/*}
